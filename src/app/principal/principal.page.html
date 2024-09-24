@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Página Principal
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>¡Bienvenido a la Aplicación Usuario!</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        ¡Gracias por registrarte e iniciar sesión! Nos alegra mucho tenerte con nosotros. 
+        Esperamos que disfrutes explorando la aplicación.
+      </p>
+      <p>
+        Aquí encontrarás todo lo que necesitas para empezar. Puedes acceder a las distintas funcionalidades a través de los botones de abajo. Si tienes alguna duda, no dudes en ponerte en contacto con nuestro equipo de soporte.
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" color="success" (click)="explorarApp()">
+    Explorar Aplicación
+  </ion-button>
+
+  <ion-button expand="full" color="tertiary" (click)="verPerfil()">
+    Ver Perfil
+  </ion-button>
+
+  <ion-button expand="full" color="medium" (click)="contactarSoporte()">
+    Contactar Soporte
+  </ion-button>
+</ion-content>

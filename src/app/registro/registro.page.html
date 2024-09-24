@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-align: center; color: aqua;">¡Bienvenido!</ion-title>
+    <h6 style="text-align: center; color: aqua;">Por favor registrese para acceder a los beneficios completos de nuestra app</h6>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="register-container">
+    <h2 style="color: rgb(113, 113, 237);">Crear Cuenta</h2>
+    
+    <form>
+      <ion-item>
+        <ion-input [(ngModel)]="firstname" label="Primer nombre" labelPlacement="floating"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="lastname" label="Apellido" labelPlacement="floating"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="run" label="RUT" labelPlacement="floating"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="password" label="contraseña" labelPlacement="floating" type="password"></ion-input>
+      </ion-item>
+      
+      <ion-button expand="full" (click)="registrar()">Registrar</ion-button>
+    </form>
+  </div>
+</ion-content>

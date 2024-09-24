@@ -1,0 +1,26 @@
+<ion-header  [translucent]="true" class="ion-text-center ion-no-border">
+  <ion-toolbar>
+    <ion-title>
+      <h1>Login</h1>
+      <h6>Ingresa a tu cuenta o crea una</h6>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="login-container" style="margin-left: auto; margin-right: auto; width: 300px;">
+    <h2 style="color: blue;">Iniciar Sesión</h2>
+    <ion-item>
+      <ion-input [(ngModel)]="username" label="Usuario" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input [(ngModel)]="password" label="Password" labelPlacement="floating" type="password"></ion-input>
+    </ion-item>
+
+
+    <ion-button expand="full" color="primary" (click)="iniciarSesion()">Iniciar Sesión</ion-button>
+    <ion-button expand="full" (click)="goToRegistro()">Registrar</ion-button>
+    <ion-button expand="full" fill="clear" (click)="forgotPassword()">¿Olvidaste tu contraseña?</ion-button>
+  </div>
+</ion-content>
