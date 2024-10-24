@@ -9,21 +9,21 @@
   <div class="register-container">
     <h2 style="color: rgb(113, 113, 237);">Crear Cuenta</h2>
     
-    <form>
+    <form (ngSubmit)="registrar()">
       <ion-item>
-        <ion-input [(ngModel)]="firstname" label="Primer nombre" labelPlacement="floating"></ion-input>
+        <ion-input [(ngModel)]="username" name="username" label="Nombre de usuario" labelPlacement="floating"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input [(ngModel)]="lastname" label="Apellido" labelPlacement="floating"></ion-input>
+        <ion-input [(ngModel)]="nombreCompleto" name="nombreCompleto" label="Nombre completo" labelPlacement="floating"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input [(ngModel)]="run" label="RUT" labelPlacement="floating"></ion-input>
+        <ion-input [(ngModel)]="run" name="run" label="RUT" labelPlacement="floating"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input [(ngModel)]="password" label="contraseña" labelPlacement="floating" type="password"></ion-input>
+        <ion-input [(ngModel)]="password" name="password" label="Contraseña" labelPlacement="floating" type="password"></ion-input>
       </ion-item>
       
-      <ion-button expand="full" (click)="registrar()">Registrar</ion-button>
+      <ion-button expand="full" type="submit">Registrar</ion-button>
     </form>
   </div>
 </ion-content>

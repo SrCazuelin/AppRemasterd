@@ -1,55 +1,65 @@
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
-import { timeout } from 'rxjs';
+import { NavController, ToastController, AlertController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-cambiar-contrasena',
   templateUrl: './cambiar-contrasena.page.html',
   styleUrls: ['./cambiar-contrasena.page.scss'],
 })
-
 export class CambiarContrasenaPage {
-  newPassword: string | undefined; 
-  confirmNewPassword: string | undefined;
 
-  constructor(private navCtrl: NavController, private alertController: AlertController) {}
+  username: string = '';
+  password: string = '';
+  newPassword: string = '';
+  confirmNewPassword: string = '';
 
-  resetPassword() {
-    if (this.newPassword === this.confirmNewPassword) {
-      this.Successful();
-      this.navCtrl.navigateBack('/home'); 
+  constructor(
+    private navCtrl: NavController,
+    private storage: Storage,
+    private toastController: ToastController,
+    private alertController: AlertController
+  ) {
+    this.initStorage();
+  }
+
+  async initStorage() {
+    await this.storage.create();
+  }
+
+  async resetPassword() {
+    if (this.username && this.password && this.newPassword && this.confirmNewPassword) {
+      if (this.newPassword !== this.confirmNewPassword) {
+        this.mostrarMensaje('Las nuevas contraseñas no coinciden');
+        return;
+      }
+
+      try {
+        const usuario = await this.storage.get(this.username);
+        if (usuario && usuario.password === this.password) {
+          // Actualizar la contraseña
+          usuario.password = this.newPassword;
+          await this.storage.set(this.username, usuario);
+          this.mostrarMensaje('Contraseña cambiada exitosamente');
+          this.navCtrl.navigateBack('/home');
+        } else {
+          this.mostrarMensaje('Usuario o contraseña actual incorrectos');
+        }
+      } catch (error) {
+        console.error('Error al cambiar la contraseña:', error);
+        this.mostrarMensaje('Error al cambiar la contraseña');
+      }
     } else {
-      this.errorEqual();
-    
+      this.mostrarMensaje('Por favor, completa todos los campos');
     }
   }
 
-  async errorEqual() {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'Las contraseñas no coinciden',
-      buttons: ['OK']
+  async mostrarMensaje(mensaje: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'top'
     });
-    await alert.present();
+    toast.present();
   }
-
-  async errorblank() {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'Su contraseña no puede quedar en blanco',
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
-
-  async Successful() {
-    const alert = await this.alertController.create({
-      header: 'Felicitaciones',
-      message: 'La contraseña fue cambiada con exito',
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
-
 }

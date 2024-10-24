@@ -8,6 +8,12 @@
   <div class="form-container" style="margin-left: auto; margin-right: auto; width: 300px;">
     <h2 style="text-align: center; color: rgb(4, 0, 255);">Ingrese su nueva contraseña</h2>
     <ion-item>
+      <ion-input [(ngModel)]="username" label="Nombre de usuario" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="password" label="Contraseña actual" labelPlacement="floating" type="password"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-input [(ngModel)]="newPassword" label="Nueva Contraseña" labelPlacement="floating" type="password"></ion-input>
     </ion-item>
     <ion-item>
