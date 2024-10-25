@@ -64,4 +64,9 @@ export class RegistroPage {
     });
     toast.present();
   }
+
+  // Nueva función para volver a la página de inicio
+  volverAInicio() {
+    this.navCtrl.navigateBack('/home');
+  }
 }

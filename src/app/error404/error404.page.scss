@@ -1,0 +1,30 @@
+ion-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Usa la altura completa de la ventana */
+  padding: 0; /* Sin padding */
+  margin: 0; /* Sin margin */
+}
+
+.error-container {
+  width: 100%; /* Ocupa todo el ancho */
+  max-width: 400px; /* Ancho máximo */
+  padding: 20px; /* Espaciado interno */
+  text-align: center;
+
+  h1 {
+    font-size: 72px;
+    color: var(--ion-color-danger);
+  }
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 30px;
+  }
+}

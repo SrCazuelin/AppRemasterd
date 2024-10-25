@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController, NavController, AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-principal',
@@ -10,20 +12,63 @@ export class PrincipalPage implements OnInit {
 
   username: string = 'Usuario';
 
-  constructor(private toastController: ToastController, private navCtrl: NavController,private alertController: AlertController) { }
+  constructor(
+    private router: Router,
+    private storage: Storage,
+    private alertController: AlertController,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
-    this.mostrarToastBienvenida();
+    this.cargarUsuario();
   }
 
-  async mostrarToastBienvenida() {
-    const toast = await this.toastController.create({
-      message: `¡Bienvenido, ${this.username}! Nos alegra tenerte de vuelta.`,
-      duration: 3000,
-      position: 'top',
-      color: 'primary',
+  async cargarUsuario() {
+    const usuarioActual = await this.storage.get('usuarioActual');
+    if (usuarioActual) {
+      this.username = usuarioActual;
+    }
+  }
+
+  async cerrarSesion() {
+    await this.storage.remove('usuarioActual');
+    this.router.navigate(['/home']);
+  }
+
+  async borrarCuenta() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar borrado',
+      message: '¿Estás seguro de que quieres borrar tu cuenta? Esta acción no se puede deshacer.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }, {
+          text: 'Borrar',
+          handler: () => {
+            this.confirmarBorrado();
+          }
+        }
+      ]
     });
-    toast.present();
+
+    await alert.present();
+  }
+
+  async confirmarBorrado() {
+    const usuarioActual = await this.storage.get('usuarioActual');
+    if (usuarioActual) {
+      await this.storage.remove(usuarioActual);
+      await this.storage.remove('usuarioActual');
+      
+      const toast = await this.toastController.create({
+        message: 'Tu cuenta ha sido borrada',
+        duration: 2000
+      });
+      toast.present();
+
+      this.router.navigate(['/home']);
+    }
   }
 
   async explorarApp() {
