@@ -1,0 +1,39 @@
+ion-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Toda la altura de la pantalla */
+    
+  }
+
+.form-container {
+  width: 100%; /* Ocupa todo el ancho */
+  max-width: 400px; /* Ancho máximo */
+  padding: 20px; /* Espaciado interno */
+  text-align: center;
+
+  h1 {
+    font-size: 72px;
+    color: var(--ion-color-danger);
+  }
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 30px;
+  }
+}
+
+ion-item {
+  --background: #000000;
+  --border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+ion-button {
+  margin-top: 20px;
+}
+

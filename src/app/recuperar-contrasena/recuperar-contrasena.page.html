@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title style="text-align: center; color: aqua;">Cambiar Contraseña</ion-title>
+    <ion-title style="text-align: center; color: aqua;">Recuperar Contraseña</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="form-container" style="margin-left: auto; margin-right: auto; width: 300px;">
-    <h2 style="text-align: center; color: rgb(4, 0, 255);">Ingrese su nueva contraseña</h2>
+    <h2 style="text-align: center; color: rgb(255, 255, 255);">Recupere su contraseña</h2>
     <ion-item>
       <ion-input [(ngModel)]="username" label="Nombre de usuario" labelPlacement="floating"></ion-input>
     </ion-item>
@@ -14,15 +14,12 @@
       <ion-input [(ngModel)]="RUT" label="RUT" labelPlacement="floating"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input [(ngModel)]="password" label="Contraseña actual" labelPlacement="floating" type="password"></ion-input>
-    </ion-item>
-    <ion-item>
       <ion-input [(ngModel)]="newPassword" label="Nueva Contraseña" labelPlacement="floating" type="password"></ion-input>
     </ion-item>
     <ion-item>
       <ion-input [(ngModel)]="confirmNewPassword" label="Confirmar Nueva Contraseña" labelPlacement="floating" type="password"></ion-input>
     </ion-item>
-    <ion-button expand="full" (click)="resetPassword()">Cambiar Contraseña</ion-button>
-    <ion-button expand="full" color="danger" (click)="regresarYCerrarSesion()">Regresar y Cerrar Sesión</ion-button>
+    <ion-button expand="full" (click)="recuperarContrasena()">Recuperar Contraseña</ion-button>
+    <ion-button expand="full" color="medium" (click)="regresar()">Regresar</ion-button>
   </div>
 </ion-content>

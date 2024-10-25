@@ -7,18 +7,39 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card>
+  <ion-card *ngIf="usuario">
     <ion-card-header>
-      <ion-card-title>¡Bienvenido a la Aplicación Usuario!</ion-card-title>
+      <ion-card-title>¡Bienvenido, {{ usuario.nombreCompleto }}!</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>
-        ¡Gracias por registrarte e iniciar sesión! Nos alegra mucho tenerte con nosotros. 
-        Esperamos que disfrutes explorando la aplicación.
-      </p>
-      <p>
-        Aquí encontrarás todo lo que necesitas para empezar. Puedes acceder a las distintas funcionalidades a través de los botones de abajo. Si tienes alguna duda, no dudes en ponerte en contacto con nuestro equipo de soporte.
-      </p>
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <h2>Nombre de usuario:</h2>
+            <p>{{ usuario.username }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>Nombre completo:</h2>
+            <p>{{ usuario.nombreCompleto }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h2>RUN:</h2>
+            <p>{{ usuario.run }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="weather">
+          <ion-label>
+            <h2>Clima actual:</h2>
+            <p>Temperatura: {{ weather.temperature }}°C</p>
+            <p>Velocidad del viento: {{ weather.windspeed }} km/h</p>
+            <p>Dirección del viento: {{ weather.winddirection }}°</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
 
@@ -26,19 +47,21 @@
     Explorar Aplicación
   </ion-button>
 
-  <ion-button expand="full" color="tertiary" (click)="verPerfil()">
-    Ver Perfil
-  </ion-button>
-
   <ion-button expand="full" color="medium" (click)="contactarSoporte()">
     Contactar Soporte
   </ion-button>
 
-  <ion-button expand="full" color="medium" (click)="cerrarSesion()">
+  <ion-button expand="full" color="tertiary" (click)="irACambiarContrasena()">
+    Cambiar Contraseña
+  </ion-button>
+
+  <ion-button expand="full" color="warning" (click)="cerrarSesion()">
     Cerrar Sesión
   </ion-button>
 
   <ion-button expand="full" color="danger" (click)="borrarCuenta()">
     Borrar Cuenta
   </ion-button>
+
+  <ion-button expand="full" (click)="obtenerUbicacion()">Actualizar Ubicación y Clima</ion-button>
 </ion-content>

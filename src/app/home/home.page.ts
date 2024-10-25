@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
+import { NavController, ToastController, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular'; // Importa el servicio de almacenamiento
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +17,8 @@ export class HomePage {
     private navCtrl: NavController, 
     private toastController: ToastController,
     private alertController: AlertController,
-    private storage: Storage // Inyecta el servicio de almacenamiento
+    private storage: Storage, // Inyecta el servicio de almacenamiento
+    private router: Router
   ) {
     this.init();
   }
@@ -36,7 +37,7 @@ export class HomePage {
         const usuario = await this.storage.get(this.username);
         if (usuario && usuario.password === this.password) {
           console.log('Inicio de sesión exitoso');
-          await this.storage.set('usuarioActual', this.username);
+          await this.storage.set('usuarioActual', usuario);
           this.mostrarBienvenida();
           this.navCtrl.navigateForward('/principal');
         } else {
@@ -74,5 +75,13 @@ export class HomePage {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  irACambiarContrasena() {
+    this.router.navigate(['/cambiar-contrasena']);
+  }
+
+  irARecuperarContrasena() {
+    this.router.navigate(['/recuperar-contrasena']);
   }
 }
