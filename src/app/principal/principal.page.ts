@@ -4,11 +4,18 @@ import { AlertController, ToastController, NavController } from '@ionic/angular'
 import { Storage } from '@ionic/storage-angular';
 import { Geolocation } from '@capacitor/geolocation';
 import { WeatherService } from '../services/weather.service';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 interface Usuario {
   username: string;
   nombreCompleto: string;
   run: string;
+}
+
+interface Asignatura {
+  nombre: string;
+  asistida: boolean;
+  codigoQR: string; // Código QR asociado
 }
 
 @Component({
@@ -20,8 +27,15 @@ export class PrincipalPage implements OnInit {
 
   usuario: Usuario | null = null;
   latitude: number = 0;
-  longitude: number = 0;
+  longitude: number = 0; 
   weather: any;
+  asignaturas: Asignatura[] = [
+    { nombre: 'Matemáticas', asistida: false, codigoQR: 'matematicas' },
+    { nombre: 'Ciencias', asistida: false, codigoQR: 'ciencias' },
+    { nombre: 'Historia', asistida: false, codigoQR: 'historia' },
+    { nombre: 'Lengua', asistida: false, codigoQR: 'lengua' },
+    { nombre: 'Arte', asistida: false, codigoQR: 'arte' },
+  ];
 
   constructor(
     private router: Router,
@@ -40,11 +54,22 @@ export class PrincipalPage implements OnInit {
   async cargarUsuario() {
     const usuarioActual = await this.storage.get('usuarioActual');
     if (usuarioActual) {
-      this.usuario = usuarioActual;
-      console.log('Usuario cargado:', this.usuario);
+        this.usuario = usuarioActual;
+        console.log('Usuario cargado:', this.usuario);
+
+        // Cargar las asistencias del usuario
+        const asistencias = await this.storage.get('asistencias') || {};
+        if (asistencias[usuarioActual.username]) {
+            const codigosAsistidos = Object.keys(asistencias[usuarioActual.username]);
+            this.asignaturas.forEach(asignatura => {
+                if (codigosAsistidos.includes(asignatura.codigoQR)) {
+                    asignatura.asistida = true; // Marcar como asistida
+                }
+            });
+        }
     } else {
-      console.error('No se pudo cargar la información del usuario');
-      this.router.navigate(['/home']);
+        console.error('No se pudo cargar la información del usuario');
+        this.router.navigate(['/home']);
     }
   }
 
@@ -109,16 +134,19 @@ export class PrincipalPage implements OnInit {
   async confirmarBorrado() {
     const usuarioActual = await this.storage.get('usuarioActual');
     if (usuarioActual) {
-      await this.storage.remove(usuarioActual);
-      await this.storage.remove('usuarioActual');
-      
-      const toast = await this.toastController.create({
-        message: 'Tu cuenta ha sido borrada',
-        duration: 2000
-      });
-      toast.present();
+        // Eliminar la cuenta del almacenamiento usando el nombre de usuario
+        await this.storage.remove(usuarioActual.username);
+        // Eliminar la referencia del usuario actual
+        await this.storage.remove('usuarioActual');
 
-      this.router.navigate(['/home']);
+        const toast = await this.toastController.create({
+            message: 'Tu cuenta ha sido borrada y has cerrado sesión.',
+            duration: 2000
+        });
+        toast.present();
+
+        // Redirigir a la página de inicio
+        this.router.navigate(['/home']);
     }
   }
 
@@ -165,6 +193,45 @@ export class PrincipalPage implements OnInit {
 
   irACambiarContrasena() {
     this.router.navigate(['/cambiar-contrasena']);
+  }
+
+  async scanQRCode() {
+    const result = await BarcodeScanner.startScan();
+    if (result.hasContent) {
+      console.log('Código QR escaneado:', result.content);
+      this.registrarAsistencia(result.content);
+    }
+  }
+
+  async registrarAsistencia(codigoQR: string) {
+    const asignatura = this.asignaturas.find(a => a.codigoQR === codigoQR);
+    if (asignatura) {
+        asignatura.asistida = true;
+        this.mostrarMensaje(`Asistencia registrada para ${asignatura.nombre}`);
+
+        // Obtener el usuario actual
+        const usuarioActual = await this.storage.get('usuarioActual');
+        if (!usuarioActual) {
+            this.mostrarMensaje('No hay usuario autenticado');
+            return;
+        }
+
+        // Obtener las asistencias del almacenamiento
+        const asistencias = await this.storage.get('asistencias') || {};
+
+        // Si no hay un objeto para el usuario actual, inicializarlo
+        if (!asistencias[usuarioActual.username]) {
+            asistencias[usuarioActual.username] = {};
+        }
+
+        // Marcar la asignatura como asistida
+        asistencias[usuarioActual.username][codigoQR] = true;
+
+        // Guardar las asistencias actualizadas en el almacenamiento
+        await this.storage.set('asistencias', asistencias);
+    } else {
+        this.mostrarMensaje('Código QR no válido para ninguna asignatura');
+    }
   }
 
 }
