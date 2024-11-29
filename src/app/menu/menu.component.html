@@ -1,0 +1,52 @@
+<ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <div class="saludo">
+      <h2>Bienvenido, {{ usuario?.nombreCompleto }}</h2>
+    </div>
+    <ion-list>
+      <ion-item (click)="verPerfil()">
+        <ion-icon slot="start" name="person"></ion-icon>
+        <ion-label>Tu perfil</ion-label>
+      </ion-item>
+      <ion-item (click)="irACambiarContrasena()">
+        <ion-icon slot="start" name="key"></ion-icon>
+        <ion-label>Cambiar Contraseña</ion-label>
+      </ion-item>
+      <ion-item (click)="contactarSoporte()">
+        <ion-icon slot="start" name="mail"></ion-icon>
+        <ion-label>Contactar Soporte</ion-label>
+      </ion-item>
+      <ion-item (click)="irASede()">
+        <ion-icon slot="start" name="business"></ion-icon>
+        <ion-label>Sede</ion-label>
+      </ion-item>
+      <ion-item (click)="irAAsistencia()">
+        <ion-icon slot="start" name="help-buoy"></ion-icon>
+        <ion-label>Asistencia</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div class="footer-buttons">
+      <ion-list>
+        <ion-item>
+          <ion-icon slot="start" name="help-circle"></ion-icon>
+          <ion-label>Ayuda</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="document-text"></ion-icon>
+          <ion-label>FAQ</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-item color="light" (click)="onCerrarSesion()">
+        <ion-icon slot="start" name="log-out" color="danger"></ion-icon>
+        <ion-label>Cerrar Sesión</ion-label>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-menu>

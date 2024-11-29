@@ -30,6 +30,15 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'location',
+    loadChildren: () => import('./location/location.module').then( m => m.LocationPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'asistencia',
+    loadChildren: () => import('./asistencia/asistencia.module').then( m => m.AsistenciaPageModule)
+  },
+  {
     path: 'recuperar-contrasena',
     loadChildren: () => import('./recuperar-contrasena/recuperar-contrasena.module').then(m => m.RecuperarContrasenaPageModule)
   },
@@ -40,7 +49,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: '/error404'
-  }
+  },
+  
+
+  
+
 ];
 
 @NgModule({

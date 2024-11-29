@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/principal" color="primary">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Asistencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-button routerLink="/home">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button> 
+  </ion-header>
+
+  <!-- Calendario -->
+  <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="selectedDate" (ionChange)="updateAttendance()"></ion-datetime>
+
+  <!-- Texto que muestra la fecha seleccionada -->
+  <div style="text-align: center; margin: 20px 0;">
+    <h3>Fecha seleccionada: {{ selectedDate | date: 'dd/MM/yyyy' }}</h3>
+  </div>
+
+  <!-- Tabla de asistencia -->
+  <ion-grid>
+    <ion-row>
+      <ion-col>Asignatura</ion-col>
+      <ion-col>Asistencia</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let subject of validSubjects">
+      <ion-col>{{ subject }}</ion-col>
+      <ion-col>
+        <ion-icon *ngIf="attendanceRecord[subject] === true" name="checkmark-circle" color="success"></ion-icon>
+        <ion-icon *ngIf="attendanceRecord[subject] === false" name="close-circle" color="danger"></ion-icon>
+        <ion-icon *ngIf="attendanceRecord[subject] === null" name="help-circle" color="medium"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Botón de escanear QR -->
+  <ion-button (click)="scanQRCode()" color="secondary" expand="full">
+    <ion-icon name="qr-code-outline"></ion-icon>
+    Escanear QR
+  </ion-button>
+</ion-content>

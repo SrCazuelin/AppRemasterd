@@ -1,0 +1,14 @@
+ion-menu {
+    .saludo {
+      background-color: rgb(130, 184, 255); /* Color de fondo azul */
+      color: black; /* Color del texto negro */
+      padding: 16px; /* Espaciado interno */
+      text-align: center; /* Centrar el texto */
+    }
+  
+    .footer-buttons {
+      position: absolute; /* Posiciona el contenedor en la parte inferior */
+      bottom: 0; /* Alinea al fondo */
+      width: 100%; /* Ancho completo */
+    }
+  }
