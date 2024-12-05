@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Storage } from '@ionic/storage-angular';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-asistencia',
@@ -15,7 +16,7 @@ export class AsistenciaPage implements OnInit {
   attendanceRecordsByDate: { [date: string]: { [subject: string]: boolean | null } } = {};
   attendanceRecord: { [subject: string]: boolean | null } = {};
 
-  constructor(private cdr: ChangeDetectorRef, private storage: Storage) {
+  constructor(private cdr: ChangeDetectorRef, private storage: Storage, private alertController: AlertController) {
     this.initStorage();
   }
 
@@ -87,18 +88,41 @@ export class AsistenciaPage implements OnInit {
 
       if (result.hasContent) {
         const qrData = result.content.trim().split('-');
-        const [day, month, year, subject] = qrData;
+        const [day, month, year, subject, section] = qrData;
 
         const scannedDate = `${year}-${month}-${day}`;
         const currentDate = this.getCurrentDate();
 
+        const validSections = ['006D', '005D', '004D'];
+
+        if (!validSections.includes(section)) {
+          this.attendanceMessage = 'Sección no existente.';
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'Sección no existente.',
+            buttons: ['OK']
+          });
+          await alert.present();
+          return;
+        }
+
         if (scannedDate < currentDate) {
           this.attendanceMessage = 'La clase ya pasó.';
-          alert('Error: La clase ya pasó.');
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'La clase ya pasó.',
+            buttons: ['OK']
+          });
+          await alert.present();
           return;
         } else if (scannedDate > currentDate) {
           this.attendanceMessage = 'La clase aún no ha pasado.';
-          alert('Error: La clase aún no ha pasado.');
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'La clase aún no ha pasado.',
+            buttons: ['OK']
+          });
+          await alert.present();
           return;
         }
 
@@ -107,15 +131,24 @@ export class AsistenciaPage implements OnInit {
         }
 
         if (this.validSubjects.includes(subject)) {
-          this.attendanceMessage = `Asististe a la clase de ${subject} el ${scannedDate}`;
+          this.attendanceMessage = `Asististe a la clase de ${subject} el ${scannedDate} en la sección ${section}`;
           this.attendanceRecordsByDate[scannedDate][subject] = true;
-          alert(`Asistencia registrada: ${subject} el ${scannedDate}`);
-
+          const alert = await this.alertController.create({
+            header: 'Asistencia Registrada',
+            message: `Asistencia registrada: ${subject} el ${scannedDate} en la sección ${section}`,
+            buttons: ['OK']
+          });
+          await alert.present();
           await this.guardarAsistencia(scannedDate, subject);
         } else {
           this.attendanceMessage = `La asignatura no es válida.`;
           this.attendanceRecordsByDate[scannedDate][subject] = false;
-          alert(`Error: La asignatura ${subject} no es válida.`);
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: `La asignatura ${subject} no es válida.`,
+            buttons: ['OK']
+          });
+          await alert.present();
         }
 
         if (scannedDate === this.formatDate(this.selectedDate)) {
@@ -125,12 +158,22 @@ export class AsistenciaPage implements OnInit {
         }
       } else {
         this.attendanceMessage = 'No se encontró contenido en el código QR';
-        alert('Error: No se encontró contenido en el código QR');
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se encontró contenido en el código QR',
+          buttons: ['OK']
+        });
+        await alert.present();
       }
     } catch (error) {
       console.error('Error al escanear el código QR:', error);
       this.attendanceMessage = 'Error al escanear el código QR';
-      alert('Error al escanear el código QR');
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Error al escanear el código QR',
+        buttons: ['OK']
+      });
+      await alert.present();
     } finally {
       BarcodeScanner.stopScan();
     }
