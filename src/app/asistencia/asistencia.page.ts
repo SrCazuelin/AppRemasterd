@@ -52,6 +52,7 @@ export class AsistenciaPage implements OnInit {
 
   updateAttendance() {
     const formattedDate = this.formatDate(this.selectedDate);
+    const currentDate = this.getCurrentDate();
 
     if (!this.attendanceRecordsByDate[formattedDate]) {
       this.attendanceRecordsByDate[formattedDate] = this.initializeAttendanceRecord();
@@ -61,6 +62,14 @@ export class AsistenciaPage implements OnInit {
 
     this.validSubjects.forEach(subject => {
       if (this.attendanceRecord[subject] === undefined) {
+        this.attendanceRecord[subject] = null;
+      }
+
+      if (formattedDate < currentDate && this.attendanceRecord[subject] === null) {
+        this.attendanceRecord[subject] = false;
+      }
+
+      if (formattedDate === currentDate && this.attendanceRecord[subject] === null) {
         this.attendanceRecord[subject] = null;
       }
     });
@@ -81,6 +90,17 @@ export class AsistenciaPage implements OnInit {
         const [day, month, year, subject] = qrData;
 
         const scannedDate = `${year}-${month}-${day}`;
+        const currentDate = this.getCurrentDate();
+
+        if (scannedDate < currentDate) {
+          this.attendanceMessage = 'La clase ya pasó.';
+          alert('Error: La clase ya pasó.');
+          return;
+        } else if (scannedDate > currentDate) {
+          this.attendanceMessage = 'La clase aún no ha pasado.';
+          alert('Error: La clase aún no ha pasado.');
+          return;
+        }
 
         if (!this.attendanceRecordsByDate[scannedDate]) {
           this.attendanceRecordsByDate[scannedDate] = this.initializeAttendanceRecord();

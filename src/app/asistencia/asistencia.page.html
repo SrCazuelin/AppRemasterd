@@ -45,7 +45,8 @@
       <ion-col>
         <ion-icon *ngIf="attendanceRecord[subject] === true" name="checkmark-circle" color="success"></ion-icon>
         <ion-icon *ngIf="attendanceRecord[subject] === false" name="close-circle" color="danger"></ion-icon>
-        <ion-icon *ngIf="attendanceRecord[subject] === null" name="help-circle" color="medium"></ion-icon>
+        <ion-icon *ngIf="attendanceRecord[subject] === null && selectedDate !== getCurrentDate()" name="help-circle" color="medium"></ion-icon>
+        <ion-icon *ngIf="attendanceRecord[subject] === null && selectedDate === getCurrentDate()" name="alert-circle" color="warning"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
