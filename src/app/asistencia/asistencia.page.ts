@@ -135,6 +135,32 @@ export class AsistenciaPage implements OnInit {
           return;
         }
 
+        const usuarioActual = await this.storage.get('usuarioActual');
+        if (!usuarioActual) {
+          this.attendanceMessage = 'No hay usuario autenticado';
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'No hay usuario autenticado',
+            buttons: ['OK']
+          });
+          await alert.present();
+          return;
+        }
+
+        if (!usuarioActual.section) {
+          usuarioActual.section = section;
+          await this.storage.set('usuarioActual', usuarioActual);
+        } else if (usuarioActual.section !== section) {
+          this.attendanceMessage = `No puedes registrarte en la sección ${section} porque ya estás registrado en la sección ${usuarioActual.section}.`;
+          const alert = await this.alertController.create({
+            header: 'Error de Sección',
+            message: `No puedes registrarte en la sección ${section} porque ya estás registrado en la sección ${usuarioActual.section}.`,
+            buttons: ['OK']
+          });
+          await alert.present();
+          return;
+        }
+
         if (scannedDate < currentDate) {
           this.attendanceMessage = 'La clase ya pasó.';
           const alert = await this.alertController.create({
@@ -160,6 +186,17 @@ export class AsistenciaPage implements OnInit {
         }
 
         if (this.validSubjects.includes(subject)) {
+          if (this.attendanceRecordsByDate[scannedDate][subject] === true) {
+            this.attendanceMessage = `La asistencia para ${subject} ya ha sido registrada.`;
+            const alert = await this.alertController.create({
+              header: 'Asistencia Ya Registrada',
+              message: `La asistencia para ${subject} ya ha sido registrada.`,
+              buttons: ['OK']
+            });
+            await alert.present();
+            return;
+          }
+
           this.attendanceMessage = `Asististe a la clase de ${subject} el ${scannedDate} en la sección ${section}`;
           this.attendanceRecordsByDate[scannedDate][subject] = true;
           const alert = await this.alertController.create({
