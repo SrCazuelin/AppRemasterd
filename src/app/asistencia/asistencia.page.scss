@@ -52,3 +52,8 @@ ion-icon {
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+.scanner-active ion-content {
+  opacity: 0; /* Hace que todo el contenido sea transparente */
+  pointer-events: none; /* Desactiva la interacción con el contenido */
+}

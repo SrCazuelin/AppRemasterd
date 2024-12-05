@@ -1,0 +1,28 @@
+ion-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f5; /* Fondo suave */
+}
+
+.perfil-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+}
+
+h2 {
+  color: #4a4a4a;
+  margin-bottom: 20px;
+}
+
+p {
+  color: #6b6b6b;
+  margin-bottom: 10px;
+  font-size: 16px;
+}

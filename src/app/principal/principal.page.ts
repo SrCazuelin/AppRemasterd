@@ -75,6 +75,15 @@ export class PrincipalPage implements OnInit {
 
   async obtenerUbicacion() {
     try {
+      const hasPermission = await Geolocation.checkPermissions();
+      if (hasPermission.location !== 'granted') {
+        const permission = await Geolocation.requestPermissions();
+        if (permission.location !== 'granted') {
+          this.mostrarMensaje('Permiso de ubicación no concedido');
+          return;
+        }
+      }
+
       const coordinates = await Geolocation.getCurrentPosition();
       this.latitude = coordinates.coords.latitude;
       this.longitude = coordinates.coords.longitude;

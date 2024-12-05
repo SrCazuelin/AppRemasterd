@@ -30,6 +30,10 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'perfil',
+    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  {
     path: 'location',
     loadChildren: () => import('./location/location.module').then( m => m.LocationPageModule),
     canActivate: [AuthGuard]
@@ -50,6 +54,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/error404'
   },
+  
   
 
   

@@ -15,6 +15,7 @@ export class AsistenciaPage implements OnInit {
   validSubjects: string[] = ['Matematicas', 'Ciencias', 'Historia', 'Lengua', 'Arte'];
   attendanceRecordsByDate: { [date: string]: { [subject: string]: boolean | null } } = {};
   attendanceRecord: { [subject: string]: boolean | null } = {};
+  contentHeight: string = '91vh';
 
   constructor(private cdr: ChangeDetectorRef, private storage: Storage, private alertController: AlertController) {
     this.initStorage();
@@ -83,8 +84,36 @@ export class AsistenciaPage implements OnInit {
 
   async scanQRCode() {
     try {
-      await BarcodeScanner.checkPermission({ force: true });
+      this.contentHeight = '0';
+      this.cdr.detectChanges();
+
+      const status = await BarcodeScanner.checkPermission({ force: true });
+      if (!status.granted) {
+        const alert = await this.alertController.create({
+          header: 'Permiso de Cámara',
+          message: 'La aplicación necesita acceso a la cámara para escanear códigos QR.',
+          buttons: ['OK']
+        });
+        await alert.present();
+        return;
+      }
+
+      const bodyElement = document.querySelector('body');
+      if (bodyElement) {
+        bodyElement.classList.add('scanner-active');
+      }
+
+      BarcodeScanner.showBackground();
+      const cameraContainer = document.getElementById('camera-container');
+      if (cameraContainer) {
+        cameraContainer.style.display = 'block';
+      }
+
       const result = await BarcodeScanner.startScan();
+
+      if (cameraContainer) {
+        cameraContainer.style.display = 'none';
+      }
 
       if (result.hasContent) {
         const qrData = result.content.trim().split('-');
@@ -156,6 +185,9 @@ export class AsistenciaPage implements OnInit {
           console.log('Attendance Record:', this.attendanceRecord);
           this.cdr.detectChanges();
         }
+
+        this.contentHeight = '91vh';
+        this.cdr.detectChanges();
       } else {
         this.attendanceMessage = 'No se encontró contenido en el código QR';
         const alert = await this.alertController.create({
@@ -175,7 +207,15 @@ export class AsistenciaPage implements OnInit {
       });
       await alert.present();
     } finally {
-      BarcodeScanner.stopScan();
+      if (BarcodeScanner) {
+        BarcodeScanner.stopScan();
+      }
+      const bodyElement = document.querySelector('body');
+      if (bodyElement) {
+        bodyElement.classList.remove('scanner-active');
+      }
+      this.contentHeight = '91vh';
+      this.cdr.detectChanges();
     }
   }
 
