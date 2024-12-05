@@ -20,6 +20,7 @@
         <ion-card-title>¡Bienvenido, {{ usuario.nombreCompleto }}!</ion-card-title>
       </ion-card-header>
       <ion-card-content>
+        <p>En esta aplicación, puedes registrar tus asignaturas, actualizar tu ubicación y clima, y gestionar tu cuenta de usuario, entre otras cosas.</p>
         <ion-list>
           <ion-item>
             <ion-label>
@@ -51,10 +52,6 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-button expand="full" color="success" (click)="explorarApp()">
-      Explorar Aplicación
-    </ion-button>
-
     <ion-button expand="full" color="medium" (click)="contactarSoporte()">
       Contactar Soporte
     </ion-button>
@@ -69,37 +66,6 @@
 
     <ion-button expand="full" color="danger" (click)="borrarCuenta()">
       Borrar Cuenta
-    </ion-button>
-
-    <ion-button expand="full" (click)="obtenerUbicacion()">Actualizar Ubicación y Clima</ion-button>
-    
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Registro de Asistencia</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <table>
-          <thead>
-            <tr>
-              <th>Asignatura</th>
-              <th>Asistencia</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let asignatura of asignaturas">
-              <td>{{ asignatura.nombre }}</td>
-              <td>
-                <ion-icon *ngIf="asignatura.asistida" name="checkmark-circle" color="success"></ion-icon>
-                <ion-icon *ngIf="!asignatura.asistida" name="close-circle" color="danger"></ion-icon>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-button expand="full" color="primary" (click)="scanQRCode()">
-      <ion-icon name="qr-code"></ion-icon> Registrar Asistencia
     </ion-button>
   </div>
 </ion-content>

@@ -58,6 +58,12 @@ export class AsistenciaPage implements OnInit {
     }
 
     this.attendanceRecord = { ...this.attendanceRecordsByDate[formattedDate] };
+
+    this.validSubjects.forEach(subject => {
+      if (this.attendanceRecord[subject] === undefined) {
+        this.attendanceRecord[subject] = null;
+      }
+    });
   }
 
   formatDate(date: string): string {

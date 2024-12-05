@@ -16,8 +16,18 @@
     </ion-button> 
   </ion-header>
 
-  <!-- Calendario -->
-  <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="selectedDate" (ionChange)="updateAttendance()"></ion-datetime>
+  <!-- Calendario y Botón de escanear QR -->
+  <ion-row>
+    <ion-col size="8">
+      <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="selectedDate" (ionChange)="updateAttendance()"></ion-datetime>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button (click)="scanQRCode()" color="secondary" expand="full">
+        <ion-icon name="qr-code-outline"></ion-icon>
+        Escanear QR
+      </ion-button>
+    </ion-col>
+  </ion-row>
 
   <!-- Texto que muestra la fecha seleccionada -->
   <div style="text-align: center; margin: 20px 0;">
@@ -39,10 +49,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <!-- Botón de escanear QR -->
-  <ion-button (click)="scanQRCode()" color="secondary" expand="full">
-    <ion-icon name="qr-code-outline"></ion-icon>
-    Escanear QR
-  </ion-button>
 </ion-content>

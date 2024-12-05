@@ -2,7 +2,9 @@ ion-content {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Toda la altura de la pantalla */
+    height: 91vh; /* Toda la altura de la pantalla */
+    overflow-y: auto; /* Permitir desplazamiento vertical */
+    max-height: 100vh;
   }
 
 ion-grid {
