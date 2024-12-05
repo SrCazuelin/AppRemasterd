@@ -32,6 +32,9 @@ export class HomePage {
   }
 
   async iniciarSesion() {
+    this.username = this.username.trim();
+    this.password = this.password.trim();
+
     if (this.username && this.password) {
       try {
         const usuario = await this.storage.get(this.username);

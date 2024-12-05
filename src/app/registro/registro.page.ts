@@ -54,6 +54,11 @@ export class RegistroPage {
   }
 
   validarCampos(): boolean {
+    this.username = this.username.trim();
+    this.nombreCompleto = this.nombreCompleto.trim();
+    this.run = this.run.trim();
+    this.password = this.password.trim();
+
     if (this.username.length < 4) {
       this.mostrarAlerta('Validación', 'El nombre de usuario debe tener al menos 4 caracteres');
       return false;
